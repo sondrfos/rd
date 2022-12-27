@@ -1,10 +1,17 @@
-// Copyright 2018 The Flutter team. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
-
 import 'package:flutter/material.dart';
+import 'package:rd/widgets/list_dogs.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+import 'package:sqflite/sqflite.dart';
+
+import 'dart:io' show Platform;
 
 void main() {
+  if (Platform.isWindows || Platform.isLinux) {
+    // Initialize FFI
+    sqfliteFfiInit();
+  }
+  databaseFactory = databaseFactoryFfi;
+
   runApp(const MyApp());
 }
 
@@ -14,15 +21,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Welcome to Flutter',
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Welcome to Flutter'),
-        ),
-        body: const Center(
-          child: Text('Hello World'),
-        ),
+      debugShowCheckedModeBanner: false,
+      title: 'Sick doggos',
+      theme: ThemeData(
+        primarySwatch: Colors.teal,
       ),
+      home: const ListDogs(),
     );
   }
 }
